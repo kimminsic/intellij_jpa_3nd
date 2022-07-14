@@ -1,7 +1,7 @@
 package com.mysite.sbb.ArticleRepository;
 
 
-import com.mysite.sbb.db.Article;
+import com.mysite.sbb.vo.Article;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

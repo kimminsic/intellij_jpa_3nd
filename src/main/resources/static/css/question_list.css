@@ -1,0 +1,41 @@
+body{
+background-color:#505050;
+}
+
+h1 {
+width:100%;
+text-align:center;
+font-family: arial, sans-serif;
+background-color:#dddddd;
+}
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    background-color:#ffffff;
+    border-radius:30px;
+    overflow:hidden;
+}
+
+td, th {
+    text-align: center;
+    padding: 8px;
+    border: 1px solid #dddddd;
+}
+
+th {
+background-color: #dddddd;
+}
+
+tr:nth-child(even) {
+}
+
+a{
+color:inherit;
+text-decoration:none;
+}
+
+a:hover{
+color:red;
+text-decoration:underline;
+}

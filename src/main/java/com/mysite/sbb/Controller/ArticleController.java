@@ -1,9 +1,11 @@
 package com.mysite.sbb.Controller;
 
 import com.mysite.sbb.ArticleRepository.ArticleRepository;
-import com.mysite.sbb.db.Article;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.mysite.sbb.Util.Ut;
+import com.mysite.sbb.vo.Article;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -13,10 +15,11 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/sbb/article")
+@AllArgsConstructor
 public class ArticleController {
 
-    @Autowired
-    private ArticleRepository articleRepository;
+
+    private final ArticleRepository articleRepository;
 
 
     //article 생성
@@ -24,11 +27,11 @@ public class ArticleController {
     @ResponseBody
     public Object doAddArticle(String title, String body){
         Article article = new Article();
-        if(title=="" || title==null){
+        if(Ut.empty(title)){
             return "title을 입력해주세요.";
         }
 
-        if(body=="" || body==null){
+        if(Ut.empty(body)){
             return "body를 입력해주세요.";
         }
         article.setReg_date(LocalDateTime.now());
@@ -41,9 +44,10 @@ public class ArticleController {
 
     //article 다건 모두 조회
     @RequestMapping("/list")
-    @ResponseBody
-    public List<Article> getArticleList() {
-        return articleRepository.findAll();
+    public String getArticleList(Model model) {
+        List<Article> articleList = this.articleRepository.findAll();
+        model.addAttribute("articleList",articleList);
+        return "article_list";
     }
 
     //article 단건 조회
@@ -63,19 +67,19 @@ public class ArticleController {
     public List<Article> getArticleListItem(String title, String body) {
 
         //article에서 title body 둘다 충족하는 아이템 조회
-        if (title != "" && title != null && body != "" && body != null) {
+        if (!Ut.empty(title)&&!Ut.empty(body)) {
             return articleRepository.findByTitleAndBody(title, body);
         }
 
 
         //article 에서 title 을 충족하는 아이템 조회
-        else if (title != "" && title != null) {
+        else if (!Ut.empty(title)) {
             return articleRepository.findByTitle(title);
         }
 
 
         //article 에서 body를 충족하는 아이템 조회
-        else if (body != "" && body != null) {
+        else if (!Ut.empty(body)) {
             return articleRepository.findByBody(body);
         }
 
@@ -93,12 +97,12 @@ public class ArticleController {
         }
         Article getArticleItem = articleRepository.findById(id).get();
 
-        if (title != "" && title != null) {
+        if (!Ut.empty(title)) {
             getArticleItem.setTitle(title);
             getArticleItem.setUpdate_date(LocalDateTime.now());
         }
 
-        if (body != "" && body != null) {
+        if (!Ut.empty(body)) {
             getArticleItem.setBody(body);
             getArticleItem.setUpdate_date(LocalDateTime.now());
         }
