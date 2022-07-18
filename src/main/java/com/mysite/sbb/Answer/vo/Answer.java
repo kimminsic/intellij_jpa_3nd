@@ -22,8 +22,4 @@ public class Answer {
 
     @ManyToOne
     private Question question;
-<<<<<<< HEAD
-
-=======
->>>>>>> 3e6a9c7fc3922554322e263d994aa193ae4d452a
 }

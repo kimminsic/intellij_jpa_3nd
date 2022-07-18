@@ -1,27 +1,19 @@
 package com.mysite.sbb.Question.Controller;
 
-<<<<<<< HEAD
+import com.mysite.sbb.Answer.AnswerForm;
+import com.mysite.sbb.Question.QuestionForm;
 import com.mysite.sbb.Question.Service.QuestionService;
 import com.mysite.sbb.Question.vo.Question;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
-=======
-import com.mysite.sbb.Question.dao.QuestionRepository;
-import com.mysite.sbb.Question.vo.Question;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.ui.Model;
->>>>>>> 3e6a9c7fc3922554322e263d994aa193ae4d452a
-import java.util.List;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("question")
-<<<<<<< HEAD
-
 public class QuestionController {
 
     private final QuestionService questionService;
@@ -31,30 +23,30 @@ public class QuestionController {
     }
 
     @RequestMapping("list")
-    public String showQuestions(Model model){
-        List<Question> questionList = questionService.getList();
-        model.addAttribute("questionList",questionList);
+    public String showQuestion(Model model , @RequestParam(value="page",defaultValue = "0") int page) {
+        Page<Question> paging = this.questionService.getList(page);
+        model.addAttribute("paging", paging);
         return "question_list";
     }
 
     @RequestMapping("detail/{id}")
-    public String showQuestion(Model model, @PathVariable("id") Integer id){
+    public String showQuestions(Model model, @PathVariable("id") Integer id, AnswerForm answerForm){
         Question question = this.questionService.getQuestion(id);
         model.addAttribute("question",question);
         return "question_detail";
     }
 
-=======
-@AllArgsConstructor
-public class QuestionController {
-
-    private final QuestionRepository questionRepository;
-
-    @RequestMapping("list")
-    public String showQuestion(Model model){
-        List<Question> questionList = this.questionRepository.findAll();
-        model.addAttribute("questionList",questionList);
-        return "question_list";
+    @GetMapping("create")
+    public String getQuestionCreate(QuestionForm questionForm){
+        return "question_form";
     }
->>>>>>> 3e6a9c7fc3922554322e263d994aa193ae4d452a
+
+    @PostMapping("create")
+    public String setQuestionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return "question_form";
+        }
+        this.questionService.create(questionForm.getSubject(),questionForm.getContent());
+        return "redirect:/question/list";
+    }
 }
