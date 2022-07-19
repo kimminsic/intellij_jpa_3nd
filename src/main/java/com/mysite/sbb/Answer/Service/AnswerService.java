@@ -19,6 +19,13 @@ public class AnswerService {
         answer.setContent(content);
         answer.setCreateDate(LocalDateTime.now());
         answer.setQuestion(question);
+        answer.setAnswerLike(false);
+        answerRepository.save(answer);
+    }
+
+    public void setLike(Integer answerId){
+        Answer answer = answerRepository.findById(answerId).get();
+        answer.setAnswerLike(!answer.getAnswerLike());
         answerRepository.save(answer);
     }
 }

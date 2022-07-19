@@ -31,9 +31,12 @@ public class QuestionService {
     }
 
     public Question getQuestion(Integer id) {
-        Optional<Question> question = this.questionRepository.findById(id);
-        if (question.isPresent()) {
-            return question.get();
+        Optional<Question> opQuestion = this.questionRepository.findById(id);
+        if (opQuestion.isPresent()) {
+            Question question = opQuestion.get();
+            question.setViewCount(question.getViewCount()+1);
+            questionRepository.save(question);
+            return question;
         } else {
             throw new DataNotFoundException("question not found");
         }
@@ -44,6 +47,7 @@ public class QuestionService {
         q.setSubject(subject);
         q.setContent(content);
         q.setCreateDate(LocalDateTime.now());
+        q.setViewCount(0);
         questionRepository.save(q);
     }
 }

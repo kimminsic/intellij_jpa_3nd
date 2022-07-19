@@ -28,6 +28,8 @@ public class Question {
 
     private LocalDateTime createDate;
 
+    private Integer viewCount;
+
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<Answer> answerList;
 }
