@@ -31,6 +31,7 @@ public class QuestionController {
 
     @RequestMapping("detail/{id}")
     public String showQuestions(Model model, @PathVariable("id") Integer id, AnswerForm answerForm){
+        questionService.viewCnt(id);
         Question question = this.questionService.getQuestion(id);
         model.addAttribute("question",question);
         return "question_detail";

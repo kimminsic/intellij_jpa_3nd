@@ -34,12 +34,18 @@ public class QuestionService {
         Optional<Question> opQuestion = this.questionRepository.findById(id);
         if (opQuestion.isPresent()) {
             Question question = opQuestion.get();
-            question.setViewCount(question.getViewCount()+1);
-            questionRepository.save(question);
             return question;
         } else {
             throw new DataNotFoundException("question not found");
         }
+    }
+
+    public void viewCnt(Integer id){
+        Optional<Question> opQuestion = this.questionRepository.findById(id);
+        Question question = opQuestion.get();
+        question.setViewCount(question.getViewCount()+1);
+        questionRepository.save(question);
+
     }
 
     public void create(String subject, String content){
